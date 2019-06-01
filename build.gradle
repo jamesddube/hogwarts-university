@@ -1,0 +1,20 @@
+
+subprojects {
+
+    apply plugin: "java"
+
+    group = 'com.jamesdube'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '1.8'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter:2.1.5.RELEASE'
+        implementation 'org.springframework.boot:spring-boot-starter-web:2.1.5.RELEASE'
+        implementation 'com.google.code.gson:gson:2.8.5'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:2.1.5.RELEASE'
+    }
+}
