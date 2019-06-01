@@ -1,0 +1,10 @@
+pluginManagement {
+	repositories {
+		gradlePluginPortal()
+	}
+}
+rootProject.name = 'hogwarts-university'
+
+include ":subject-service"
+include ":degree-service"
+include ":matcher-service"
