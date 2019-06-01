@@ -1,0 +1,11 @@
+language: java
+jdk:
+  - oraclejdk8
+
+services:
+  - docker
+
+# Test & Build SpringBoot app
+script:
+  - ./gradlew -q test
+  - ./gradlew clean build
