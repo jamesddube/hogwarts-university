@@ -5,6 +5,7 @@ import com.jamesdube.hogwarts.subjectservice.data.repository.SubjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SubjectService {
@@ -31,4 +32,10 @@ public class SubjectService {
 
     }
 
+    public Subject find(Long id) {
+
+        Optional<Subject> optionalSubject = subjectRepository.findById(id);
+
+        return optionalSubject.orElse(null);
+    }
 }

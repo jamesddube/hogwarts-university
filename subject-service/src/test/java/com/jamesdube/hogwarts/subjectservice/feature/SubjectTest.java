@@ -66,4 +66,44 @@ public class SubjectTest extends BaseEndpointTest {
         assertEquals(2,subjectRepository.findAll().size());
 
     }
+
+    @Test
+    public void itListsASubject() throws Exception {
+
+        subjectRepository.deleteAll();
+        subjectRepository.saveAll(
+                Arrays.asList(
+                        new Subject("HCS", "Computer Science"),
+                        new Subject( "HINFO", "Information Systems")));
+
+        this.mockMvc.perform(get("/subjects/1")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("subject.code").value("HCS"))
+                .andExpect(jsonPath("subject.name").value("Computer Science"));
+
+        this.mockMvc.perform(get("/subjects/2")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("subject.code").value("HINFO"))
+                .andExpect(jsonPath("subject.name").value("Information Systems"));
+
+
+    }
+
+    @Test
+    public void itShowsA404ForASubjectThatDoesNotExist() throws Exception {
+
+        subjectRepository.deleteAll();
+
+        this.mockMvc.perform(get("/subjects/1")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("status").value(404));
+
+
+    }
 }

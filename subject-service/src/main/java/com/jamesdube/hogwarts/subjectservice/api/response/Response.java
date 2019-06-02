@@ -9,4 +9,9 @@ public class Response {
 
     protected String message;
 
+    public static Response notFound() {
+        Response response = new Response();
+        response.setStatus(404);
+        return response;
+    }
 }
