@@ -8,7 +8,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
+import java.util.Arrays;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,11 +36,34 @@ public class SubjectTest extends BaseEndpointTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("Computer Science"))
-                .andExpect(jsonPath("$.code").value("HCS"));
+                .andExpect(jsonPath("subject.name").value("Computer Science"))
+                .andExpect(jsonPath("subject.code").value("HCS"));
 
         assertEquals(1,subjectRepository.findAll().size());
 
+
+    }
+
+    @Test
+    public void itListsAllSubjects() throws Exception {
+
+        subjectRepository.deleteAll();
+        subjectRepository.saveAll(
+                Arrays.asList(
+                        new Subject("HCS", "Computer Science"),
+                        new Subject( "HINFO", "Information Systems")));
+
+        this.mockMvc.perform(get("/subjects")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("subjects").isArray())
+                .andExpect(jsonPath("subjects", hasSize(2)))
+                .andExpect(jsonPath("subjects[?(@.code==\"HCS\")]").exists())
+                .andExpect(jsonPath("subjects[?(@.code==\"HINFO\")]").exists())
+                .andExpect(jsonPath("subjects", hasSize(2)));
+
+        assertEquals(2,subjectRepository.findAll().size());
 
     }
 }

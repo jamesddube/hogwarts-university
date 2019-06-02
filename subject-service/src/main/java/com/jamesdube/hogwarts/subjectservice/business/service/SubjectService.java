@@ -4,6 +4,8 @@ import com.jamesdube.hogwarts.subjectservice.data.domain.Subject;
 import com.jamesdube.hogwarts.subjectservice.data.repository.SubjectRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SubjectService {
 
@@ -21,6 +23,11 @@ public class SubjectService {
         Subject createdSubject = subjectRepository.save(newSubject);
 
         return createdSubject;
+
+    }
+
+    public List<Subject> all(){
+        return subjectRepository.findAll();
 
     }
 

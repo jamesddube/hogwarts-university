@@ -3,10 +3,9 @@ package com.jamesdube.hogwarts.subjectservice.api.response;
 import lombok.Data;
 
 @Data
-public class Response {
+public class Subject {
 
-    protected int status;
+    private String code;
 
-    protected String message;
-
+    private String name;
 }
