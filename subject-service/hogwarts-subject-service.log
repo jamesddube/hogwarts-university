@@ -1,0 +1,3 @@
+2019-06-02 23:42:02 [main] INFO  c.j.h.s.SubjectServiceApplicationTests - Starting SubjectServiceApplicationTests on thinkpadp51 with PID 15836 (started by jdube in /media/jdube/data/workspace/personal/java/hogwarts-university/subject-service)
+2019-06-02 23:42:02 [main] INFO  c.j.h.s.SubjectServiceApplicationTests - No active profile set, falling back to default profiles: default
+2019-06-02 23:42:02 [main] INFO  c.j.h.s.SubjectServiceApplicationTests - Started SubjectServiceApplicationTests in 0.905 seconds (JVM running for 1.892)
