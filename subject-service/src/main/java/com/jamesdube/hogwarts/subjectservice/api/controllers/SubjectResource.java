@@ -67,5 +67,16 @@ public class SubjectResource {
                 .body(subjectResponse);
     }
 
+    @PatchMapping("subjects/{id}")
+    public ResponseEntity<Response> edit(@PathVariable Long id, @RequestBody SubjectRequest subjectRequest){
+
+        SubjectResponse subjectResponse = new SubjectResponse();
+
+        Subject subject =  subjectService.edit(id,subjectRequest.getCode(),subjectRequest.getName());
+
+        return subject == null ? ResponseEntity.status(422).body(Response.status(422)) :
+                ResponseEntity.status(204).body(Response.status(204));
+    }
+
 
 }

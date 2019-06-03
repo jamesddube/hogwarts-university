@@ -38,4 +38,19 @@ public class SubjectService {
 
         return optionalSubject.orElse(null);
     }
+
+    public Subject edit(Long id, String code, String name) {
+
+        Optional<Subject> optionalSubject = subjectRepository.findById(id);
+
+        if (!optionalSubject.isPresent()) return null;
+
+        Subject subject = optionalSubject.get();
+
+        subject.setCode(code);
+        subject.setName(name);
+
+        return subjectRepository.save(subject);
+
+    }
 }

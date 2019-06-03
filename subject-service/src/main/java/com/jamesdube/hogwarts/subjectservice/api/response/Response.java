@@ -9,9 +9,27 @@ public class Response {
 
     protected String message;
 
+    private static Response response;
+
+    public static Response status(int status){
+        getInstance().setStatus(status);
+        return getInstance();
+    }
+
+    public static Response message(String message){
+        getInstance().setMessage(message);
+        return getInstance();
+    }
+
     public static Response notFound() {
-        Response response = new Response();
-        response.setStatus(404);
+        getInstance().setStatus(404);
+        return getInstance();
+    }
+
+    public static Response getInstance(){
+
+        if(response == null) response = new Response();
+
         return response;
     }
 }
