@@ -6,6 +6,8 @@ import com.jamesdube.hogwarts.subjectservice.api.response.SubjectResponse;
 import com.jamesdube.hogwarts.subjectservice.business.service.SubjectService;
 import com.jamesdube.hogwarts.subjectservice.data.domain.Subject;
 import com.jamesdube.hogwarts.subjectservice.api.request.SubjectRequest;
+import com.jamesdube.hogwarts.subjectservice.utils.SubjectWrapper;
+import com.jamesdube.hogwarts.subjectservice.utils.Type;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -31,7 +33,7 @@ public class SubjectResource {
         SubjectResponse subjectResponse = new SubjectResponse();
 
         Subject subject =  subjectService.create(subjectRequest.getCode(),
-                subjectRequest.getName());
+                subjectRequest.getName(),subjectRequest.getType());
 
         subjectResponse = convert(subject);
 
@@ -40,13 +42,14 @@ public class SubjectResource {
     }
 
     @GetMapping("subjects")
-    public ResponseEntity<Response> index(){
+    public ResponseEntity<Response> index(
+            @RequestParam(required = false) String code,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String type){
 
-        SubjectListResponse subjectListResponse = new SubjectListResponse();
+        List<Subject> subjects =  subjectService.all(generateWrapper(code,name,type));
 
-        List<Subject> subjects =  subjectService.all();
-
-        subjectListResponse = convert(subjects);
+        SubjectListResponse subjectListResponse = convert(subjects);
 
         return ResponseEntity.status(200)
                 .body(subjectListResponse);
@@ -78,5 +81,13 @@ public class SubjectResource {
                 ResponseEntity.status(204).body(Response.status(204));
     }
 
+    private SubjectWrapper generateWrapper(String code, String name, String type) {
+        try{
+            return new SubjectWrapper(code,name,Type.valueOf(type));
+        }
+        catch (Exception e) {
+            return new SubjectWrapper(code, name, null);
+        }
+    }
 
 }

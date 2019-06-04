@@ -1,7 +1,9 @@
 package com.jamesdube.hogwarts.subjectservice.api.request;
 
+import com.jamesdube.hogwarts.subjectservice.utils.Type;
 import lombok.Data;
 
+@Data
 public class SubjectRequest {
 
     private Long id;
@@ -10,36 +12,15 @@ public class SubjectRequest {
 
     private String name;
 
+    private Type type;
+
     public SubjectRequest() {
     }
 
-    public SubjectRequest(Long id, String code, String name) {
+    public SubjectRequest(Long id, String code, String name, Type type) {
         this.id = id;
         this.code = code;
         this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.type = type;
     }
 }

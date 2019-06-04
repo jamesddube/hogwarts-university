@@ -2,6 +2,9 @@ package com.jamesdube.hogwarts.subjectservice.business.service;
 
 import com.jamesdube.hogwarts.subjectservice.data.domain.Subject;
 import com.jamesdube.hogwarts.subjectservice.data.repository.SubjectRepository;
+import com.jamesdube.hogwarts.subjectservice.utils.SubjectSpecification;
+import com.jamesdube.hogwarts.subjectservice.utils.SubjectWrapper;
+import com.jamesdube.hogwarts.subjectservice.utils.Type;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +19,10 @@ public class SubjectService {
         this.subjectRepository = subjectRepository;
     }
 
-    public Subject create(String code, String name){
+    public Subject create(String code, String name, Type type){
 
         Subject newSubject = new Subject(
-                code,name);
+                code,name,type);
 
         Subject createdSubject = subjectRepository.save(newSubject);
 
@@ -27,8 +30,9 @@ public class SubjectService {
 
     }
 
-    public List<Subject> all(){
-        return subjectRepository.findAll();
+    public List<Subject> all(SubjectWrapper subjectWrapper){
+
+        return subjectRepository.findAll(SubjectSpecification.filterByWrapper(subjectWrapper));
 
     }
 

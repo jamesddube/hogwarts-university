@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 
+import static com.jamesdube.hogwarts.subjectservice.utils.Type.ALEVEL;
+import static com.jamesdube.hogwarts.subjectservice.utils.Type.OLEVEL;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -38,7 +40,7 @@ public class SubjectTest extends BaseEndpointTest {
     public void itCreatesASubject() throws Exception {
 
         String content = TestHelper.toJson(
-                new Subject(2L, "HCS", "Computer Science"));
+                new Subject(2L, "HCS", "Computer Science",ALEVEL));
 
 //        Subject subject = factory(Subject.class).make();
 
@@ -48,7 +50,8 @@ public class SubjectTest extends BaseEndpointTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("subject.name").value("Computer Science"))
-                .andExpect(jsonPath("subject.code").value("HCS"));
+                .andExpect(jsonPath("subject.code").value("HCS"))
+                .andExpect(jsonPath("subject.type").value("ALEVEL"));
 
         assertEquals(1,subjectRepository.findAll().size());
 
@@ -73,6 +76,28 @@ public class SubjectTest extends BaseEndpointTest {
                 .andExpect(jsonPath("subjects[?(@.code==\"HCS\")]").exists())
                 .andExpect(jsonPath("subjects[?(@.code==\"HINFO\")]").exists())
                 .andExpect(jsonPath("subjects", hasSize(2)));
+
+        assertEquals(2,subjectRepository.findAll().size());
+
+    }
+
+    @Test
+    public void itListsAllSubjectsByType() throws Exception {
+
+        subjectRepository.deleteAll();
+        subjectRepository.saveAll(
+                Arrays.asList(
+                        new Subject("HCS", "Computer Science", ALEVEL),
+                        new Subject( "HINFO", "Information Systems",OLEVEL)));
+
+        this.mockMvc.perform(get("/subjects?type=ALEVEL")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("subjects").isArray())
+                .andExpect(jsonPath("subjects", hasSize(1)))
+                .andExpect(jsonPath("subjects[?(@.code==\"HCS\")]").exists())
+                .andExpect(jsonPath("subjects[?(@.name==\"Computer Science\")]").exists());
 
         assertEquals(2,subjectRepository.findAll().size());
 

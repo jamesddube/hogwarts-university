@@ -37,6 +37,7 @@ public class ResponseConvertor {
 
         apiSubject.setCode(subject.getCode());
         apiSubject.setName(subject.getName());
+        apiSubject.setType(subject.getType().getValue());
 
         return apiSubject;
     }
